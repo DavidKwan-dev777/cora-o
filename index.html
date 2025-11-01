@@ -9,44 +9,51 @@
     margin: 0;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #F4E1A1; /* amarelo areia */
     font-family: Arial, sans-serif;
   }
 
+  .message-top {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
   .heart-container {
     position: relative;
     width: 200px;
-    height: 200px;
+    height: 180px;
     cursor: pointer;
     transition: transform 0.1s;
   }
 
-  /* Coração simétrico, sem rebarbas, vazio */
+  /* Coração simétrico, vazio */
   .heart {
-    position: absolute;
     width: 100%;
     height: 100%;
     background: none;
     border: 4px solid red;
     border-radius: 50% 50% 50% 50%;
     clip-path: polygon(
-      50% 0%, 
-      61% 12%, 
-      75% 25%, 
-      85% 40%, 
-      100% 60%, 
-      85% 80%, 
-      50% 100%, 
-      15% 80%, 
-      0% 60%, 
-      15% 40%, 
-      25% 25%, 
+      50% 0%,
+      61% 12%,
+      75% 25%,
+      85% 40%,
+      100% 60%,
+      85% 80%,
+      50% 100%,
+      15% 80%,
+      0% 60%,
+      15% 40%,
+      25% 25%,
       39% 12%
     );
     background: none;
     transition: background 0.3s, border-color 0.2s;
+    box-sizing: border-box;
   }
 
   .heart-fill {
@@ -54,17 +61,17 @@
     width: 100%;
     height: 100%;
     clip-path: polygon(
-      50% 0%, 
-      61% 12%, 
-      75% 25%, 
-      85% 40%, 
-      100% 60%, 
-      85% 80%, 
-      50% 100%, 
-      15% 80%, 
-      0% 60%, 
-      15% 40%, 
-      25% 25%, 
+      50% 0%,
+      61% 12%,
+      75% 25%,
+      85% 40%,
+      100% 60%,
+      85% 80%,
+      50% 100%,
+      15% 80%,
+      0% 60%,
+      15% 40%,
+      25% 25%,
       39% 12%
     );
     background: red;
@@ -72,19 +79,30 @@
     transition: opacity 0.2s;
     pointer-events: none;
   }
+
+  .click-count {
+    margin-top: 20px;
+    font-size: 1.2rem;
+    color: #333;
+  }
 </style>
 </head>
 <body>
+
+<div class="message-top">Clique para surpresa</div>
 
 <div class="heart-container" id="heartContainer">
   <div class="heart" id="heart"></div>
   <div class="heart-fill" id="heartFill"></div>
 </div>
 
+<div class="click-count" id="clickCount">0 / 50</div>
+
 <script>
   const heartContainer = document.getElementById('heartContainer');
   const heartFill = document.getElementById('heartFill');
   const heart = document.getElementById('heart');
+  const clickCountDisplay = document.getElementById('clickCount');
 
   let clicks = 0;
   const maxClicks = 50;
@@ -103,6 +121,9 @@
     const fillOpacity = clicks / maxClicks;
     heartFill.style.opacity = fillOpacity;
 
+    // Atualiza contador
+    clickCountDisplay.textContent = `${clicks} / ${maxClicks}`;
+
     if (clicks >= maxClicks) {
       setTimeout(() => {
         alert('Você conseguiu!');
@@ -115,3 +136,4 @@
 
 </body>
 </html>
+
