@@ -25,6 +25,7 @@
   .heart-container {
     cursor: pointer;
     transition: transform 0.1s;
+    width: 220px;
   }
 
   .click-count {
@@ -34,12 +35,8 @@
   }
 
   svg {
-    width: 200px;
-    height: 200px;
-  }
-
-  .heart-fill {
-    transition: fill 0.2s;
+    width: 100%;
+    height: auto;
   }
 
 </style>
@@ -49,11 +46,19 @@
 <div class="message-top">Clique para surpresa</div>
 
 <div class="heart-container" id="heartContainer">
-  <svg viewBox="0 0 32 29.6">
-    <path class="heart-border" d="M23.6,0c-2.8,0-5.4,1.4-7.6,3.6C13.8,1.4,11.2,0,8.4,0C3.7,0,0,3.7,0,8.4c0,4.5,3.6,8.2,9.1,13.3l6.9,6.4
-    l6.9-6.4C28.4,16.6,32,12.9,32,8.4C32,3.7,28.3,0,23.6,0z" fill="none" stroke="red" stroke-width="2"/>
-    <path class="heart-fill" d="M23.6,0c-2.8,0-5.4,1.4-7.6,3.6C13.8,1.4,11.2,0,8.4,0C3.7,0,0,3.7,0,8.4c0,4.5,3.6,8.2,9.1,13.3l6.9,6.4
-    l6.9-6.4C28.4,16.6,32,12.9,32,8.4C32,3.7,28.3,0,23.6,0z" fill="red" opacity="0"/>
+  <svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg">
+    <!-- Coração borda -->
+    <path d="M23.6,0c-2.8,0-5.4,1.4-7.6,3.6C13.8,1.4,11.2,0,8.4,0C3.7,0,0,3.7,0,8.4c0,4.5,3.6,8.2,9.1,13.3l6.9,6.4
+      l6.9-6.4C28.4,16.6,32,12.9,32,8.4C32,3.7,28.3,0,23.6,0z"
+      fill="none" stroke="red" stroke-width="2"/>
+    
+    <!-- Preenchimento -->
+    <clipPath id="heartClip">
+      <path d="M23.6,0c-2.8,0-5.4,1.4-7.6,3.6C13.8,1.4,11.2,0,8.4,0C3.7,0,0,3.7,0,8.4c0,4.5,3.6,8.2,9.1,13.3l6.9,6.4
+        l6.9-6.4C28.4,16.6,32,12.9,32,8.4C32,3.7,28.3,0,23.6,0z"/>
+    </clipPath>
+
+    <rect id="heartFill" x="0" y="29.6" width="32" height="0" fill="red" clip-path="url(#heartClip)"/>
   </svg>
 </div>
 
@@ -61,26 +66,28 @@
 
 <script>
   const heartContainer = document.getElementById('heartContainer');
-  const heartFill = document.querySelector('.heart-fill');
+  const heartFill = document.getElementById('heartFill');
   const clickCountDisplay = document.getElementById('clickCount');
 
   let clicks = 0;
   const maxClicks = 50;
+  const heartHeight = 29.6; // altura do SVG
 
   heartContainer.addEventListener('click', () => {
     // animação de pulso
     heartContainer.style.transform = 'scale(1.2)';
-    heartFill.setAttribute('fill', '#ffffff');
     setTimeout(() => {
       heartContainer.style.transform = 'scale(1)';
-      // calcula o preenchimento
-      const fillOpacity = clicks / maxClicks;
-      heartFill.setAttribute('fill', 'red');
-      heartFill.setAttribute('opacity', fillOpacity);
     }, 150);
 
+    // incrementar clique
     clicks++;
     clickCountDisplay.textContent = `${clicks} / ${maxClicks}`;
+
+    // calcula altura do preenchimento
+    const fillHeight = (clicks / maxClicks) * heartHeight;
+    heartFill.setAttribute('y', heartHeight - fillHeight);
+    heartFill.setAttribute('height', fillHeight);
 
     if (clicks >= maxClicks) {
       setTimeout(() => {
@@ -94,3 +101,4 @@
 
 </body>
 </html>
+
